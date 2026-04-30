@@ -916,6 +916,45 @@ const obs = new IntersectionObserver(entries => {
   entries.forEach(e => { if (e.isIntersecting) e.target.classList.add('visible'); });
 }, { threshold: 0.06 });
 document.querySelectorAll('.fade-in').forEach(el => obs.observe(el));
+
+// ── SCROLL SPY & AUTO-GESER MENU ──
+const sections = document.querySelectorAll('.section');
+const navContainer = document.querySelector('.nav-tabs');
+const navTabsArray = document.querySelectorAll('.nav-tab');
+
+const scrollObserver = new IntersectionObserver((entries) => {
+  entries.forEach(entry => {
+    if (entry.isIntersecting) {
+      // 1. Cari tab mana yang cocok dengan ID section yang sedang dilihat layar
+      const currentId = entry.target.id;
+      const activeTab = document.querySelector(`.nav-tab[onclick*="${currentId}"]`);
+      
+      if (activeTab) {
+        // 2. Hapus warna aktif dari semua menu
+        navTabsArray.forEach(t => t.classList.remove('active'));
+        // 3. Beri warna aktif pada menu yang sedang dilihat
+        activeTab.classList.add('active');
+        
+        // 4. Geser menu navigasi secara otomatis (horizontal scroll)
+        const containerCenter = navContainer.clientWidth / 2;
+        const tabCenter = activeTab.offsetLeft + (activeTab.clientWidth / 2);
+        
+        navContainer.scrollTo({
+          left: tabCenter - containerCenter,
+          behavior: 'smooth'
+        });
+      }
+    }
+  });
+}, {
+  // Pengaturan ini membuat menu baru akan berganti saat 
+  // section sudah melewati sekitar 20% dari batas atas layar
+  rootMargin: '-20% 0px -60% 0px' 
+});
+
+// Mulai pantau semua section yang ada di website
+sections.forEach(sec => scrollObserver.observe(sec));
+
 </script>
 </body>
 </html>
