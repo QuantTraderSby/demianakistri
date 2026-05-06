@@ -832,30 +832,108 @@ makePairTable('tblBest',   'bestwin',   (v) => '+' + Math.round(v));
 makePairTable('tblWorst',  'worstloss', (v) => Math.round(v));
 
 // ── S6: Growth charts ──
-const fixMonthEq  = [2100.52,2153.20,2180.58,2194.32,2193.74,2245.43,2213.34,2224.38,2241.48,2272.95,2269.69,2294.72,2364.48,2401.00,2382.97,2439.17,2475.54,2547.97,2605.92,2656.43,2698.45,2765.32,2824.55,2858.44,2889.67,2875.34,2891.23,2921.45,2906.23,2937.12,2923.45,2938.23,2951.12,2968.45,2952.23,2997.45,3082.34,3116.23,3182.45,3168.23,3238.67,3312.34,3408.45,3486.23,3564.23,3643.45,3732.23,3753.45,3825.23,3871.45,3934.23,3989.45,4048.23,4113.45,4169.23,4222.45,4212.23,4274.45,4326.23,4358.45,4418.23,4472.45,4528.23,4576.45,4623.23,4673.45,4736.23,4784.45,4836.23,4871.45,4906.23,4938.45,5004.23,5056.45,5108.23,5158.45,5208.23,5264.45,5302.23,5358.45,5392.23,5434.45,5486.23,5523.45,5598.23,5648.45,5682.23,6803.84];
-const risk1MonthEq= [2328,2528,2641,2700,2698,2893,2801,2857,2934,3068,3046,3138,3412,3598,3487,3742,3891,4156,4389,4623,4812,5098,5387,5556,5734,5623,5756,5934,5823,5987,5879,5987,6098,6234,6112,6389,6823,7023,7412,7234,7623,8034,8623,9012,9534,10123,10834,11023,11823,12234,13012,13623,14234,15123,15834,16512,16234,17123,17834,18234,19534,20523,21834,22923,23712,24834,26123,27234,28534,29123,30234,31134,34234,37234,40534,44034,48234,53034,57834,64234,69834,77234,85234,92234,108234,134234,178234,410067];
-const fixYearEq   = [2311,3053,3410,4225,4964,5575,6482,6803];
-const risk1YearEq = [3017,6671,10557,24598,54299,108444,268913,410067];
+// Data ekuitas aktual dari MT5 backtest Excel — modal awal $500
+const fixMonthEq  = [600.52,653.2,680.58,694.32,693.74,758.25,732.03,737.23,755.39,793.33,789.64,811.61,876.82,922.67,1136.7,1351.62,1336.39,1336.89,1348.53,1407.16,1379.5,1450.85,1516.99,1553.5,1547.47,1609.26,1695.91,1752.53,1766.76,1791.81,1805.44,1838.2,1884.82,1874.86,1913.2,1910.37,1919.03,1869.29,1994.57,2064.4,2177.94,2105.43,2234.53,2323.61,2414.19,2590.38,2639.89,2725.14,2701.67,2721.4,2817.81,2824.92,2871.02,3047.69,3169.33,3127.41,3162.44,3246.05,3363.46,3464.87,3437.27,3486.93,3529.61,3516.81,3516.94,3615.49,3788.26,3796.95,3992.58,4116.2,4111.33,4075.74,4161.8,4189.63,4260.78,4374.63,4467.99,4554.73,4807.6,4794.98,4809.57,4909.52,4985.64,4982.27,5063.33,5154.38,5207.19,5291.83];
+const risk1MonthEq= [589.2,663.74,681.2,722.23,760.37,913.57,905.39,885.22,890.49,868.3,864.12,911.96,1073.42,1208.13,1427.08,1834.49,1862.02,2000.28,2048.33,2153.92,2196.63,2377.59,2743.14,2661.64,2574.78,2725.54,3094.48,3412.37,3509.82,3571.13,3768.2,3947.62,4636.16,4723.83,5243.61,5427.46,5872.45,5367.95,6490.47,7545.2,8758.35,8515.57,10019.61,11518.22,13075.81,16268.26,17064.61,19741.88,19310.17,21820.91,25118.04,27752.07,30112.54,39412.14,47038.65,42874.81,45383.45,51179.0,60030.14,65460.6,62285.22,66150.0,69722.93,69345.33,71452.08,77143.07,90164.39,92112.05,111561.27,122260.17,121661.94,118577.87,126102.96,127327.43,134672.7,146125.53,155992.9,164200.99,189368.57,187955.43,189464.93,199459.4,207071.72,206733.71,214843.12,223947.62,229228.88,237691.74];
+const fixYearEq   = [811.61,1553.5,1910.37,2725.14,3464.87,4075.74,4982.27,5291.83];
+const risk1YearEq = [911.96,2661.64,5427.46,19741.88,65460.6,118577.87,206733.71,237691.74];
+
+// ── Section 06: Pertumbuhan Ekuitas ──
+// Data diambil langsung dari kolom Balance MT5 backtest Excel
+// Fix Lot: modal awal $500, akhir $5,291.83 (+$4,791.83)
+// Risk 1%: modal awal $500, akhir $237,691.74 (+$237,191.74)
 
 new Chart(document.getElementById('cGrowFixM'), {
   type: 'line',
-  data: { labels: mShort, datasets: [{ data: fixMonthEq, borderColor: BLU, backgroundColor: BLU2, fill: true, tension: 0.35, pointRadius: 0, borderWidth: 2 }] },
-  options: { ...baseOpts({ scales: { x: { grid: { display: false }, border: { display: false }, ticks: { color: tc, autoSkip: true, maxTicksLimit: 12, font: { size: 8 } } }, y: { grid: { color: gc }, border: { display: false }, ticks: { color: tc, callback: v => '$' + v.toLocaleString() } } } }) }
+  data: {
+    labels: mShort,
+    datasets: [{
+      label: 'Ekuitas Fix Lot',
+      data: fixMonthEq,
+      borderColor: BLU, backgroundColor: BLU2,
+      fill: true, tension: 0.35, pointRadius: 0, borderWidth: 2
+    }]
+  },
+  options: {
+    ...baseOpts({
+      scales: {
+        x: { grid: { display: false }, border: { display: false }, ticks: { color: tc, autoSkip: true, maxTicksLimit: 12, font: { size: 8 } } },
+        y: { grid: { color: gc }, border: { display: false }, ticks: { color: tc, callback: v => '$' + v.toLocaleString() } }
+      },
+      tooltip: { callbacks: { label: ctx => 'Balance: $' + ctx.parsed.y.toLocaleString(undefined,{minimumFractionDigits:2,maximumFractionDigits:2}) } }
+    })
+  }
 });
+
 new Chart(document.getElementById('cGrowRiskM'), {
   type: 'line',
-  data: { labels: mShort, datasets: [{ data: risk1MonthEq, borderColor: GLD, backgroundColor: GLD2, fill: true, tension: 0.35, pointRadius: 0, borderWidth: 2 }] },
-  options: { ...baseOpts({ scales: { x: { grid: { display: false }, border: { display: false }, ticks: { color: tc, autoSkip: true, maxTicksLimit: 12, font: { size: 8 } } }, ...yScaleLog } }) }
+  data: {
+    labels: mShort,
+    datasets: [{
+      label: 'Ekuitas Risk 1%',
+      data: risk1MonthEq,
+      borderColor: GLD, backgroundColor: GLD2,
+      fill: true, tension: 0.35, pointRadius: 0, borderWidth: 2
+    }]
+  },
+  options: {
+    ...baseOpts({
+      scales: {
+        x: { grid: { display: false }, border: { display: false }, ticks: { color: tc, autoSkip: true, maxTicksLimit: 12, font: { size: 8 } } },
+        y: { type: 'logarithmic', grid: { color: gc }, border: { display: false }, ticks: { color: tc, callback: v => { if(v>=1000000) return '$'+v/1000000+'M'; if(v>=1000) return '$'+v/1000+'K'; return '$'+v; } } }
+      },
+      tooltip: { callbacks: { label: ctx => 'Balance: $' + ctx.parsed.y.toLocaleString(undefined,{minimumFractionDigits:2,maximumFractionDigits:2}) } }
+    })
+  }
 });
+
 new Chart(document.getElementById('cGrowFixY'), {
   type: 'bar',
-  data: { labels: D.yearly.labels, datasets: [{ data: fixYearEq, backgroundColor: 'rgba(42,82,152,0.75)', borderRadius: 5 }] },
-  options: { ...baseOpts({ scales: { x: { grid: { display: false }, border: { display: false }, ticks: { color: tc } }, y: { grid: { color: gc }, border: { display: false }, ticks: { color: tc, callback: v => '$' + v.toLocaleString() } } } }) }
+  data: {
+    labels: D.yearly.labels,
+    datasets: [{
+      label: 'Balance akhir tahun',
+      data: fixYearEq,
+      backgroundColor: 'rgba(42,82,152,0.78)', borderRadius: 5
+    }]
+  },
+  options: {
+    ...baseOpts({
+      scales: {
+        x: { grid: { display: false }, border: { display: false }, ticks: { color: tc } },
+        y: { grid: { color: gc }, border: { display: false }, ticks: { color: tc, callback: v => '$' + v.toLocaleString() } }
+      },
+      plugins: {
+        legend: { display: false },
+        datalabels: false,
+        tooltip: { callbacks: { label: ctx => 'Balance: $' + ctx.parsed.y.toLocaleString(undefined,{minimumFractionDigits:2,maximumFractionDigits:2}) } }
+      }
+    })
+  }
 });
+
 new Chart(document.getElementById('cGrowRiskY'), {
   type: 'bar',
-  data: { labels: D.yearly.labels, datasets: [{ data: risk1YearEq, backgroundColor: 'rgba(184,145,42,0.75)', borderRadius: 5 }] },
-  options: { ...baseOpts({ scales: { x: { grid: { display: false }, border: { display: false }, ticks: { color: tc } }, ...yScaleLog } }) }
+  data: {
+    labels: D.yearly.labels,
+    datasets: [{
+      label: 'Balance akhir tahun',
+      data: risk1YearEq,
+      backgroundColor: 'rgba(184,145,42,0.78)', borderRadius: 5
+    }]
+  },
+  options: {
+    ...baseOpts({
+      scales: {
+        x: { grid: { display: false }, border: { display: false }, ticks: { color: tc } },
+        y: { type: 'logarithmic', grid: { color: gc }, border: { display: false }, ticks: { color: tc, callback: v => { if(v>=1000000) return '$'+v/1000000+'M'; if(v>=1000) return '$'+v/1000+'K'; return '$'+v; } } }
+      },
+      plugins: {
+        legend: { display: false },
+        tooltip: { callbacks: { label: ctx => 'Balance: $' + ctx.parsed.y.toLocaleString(undefined,{minimumFractionDigits:2,maximumFractionDigits:2}) } }
+      }
+    })
+  }
 });
 
 // Monthly pips per year charts
@@ -883,7 +961,6 @@ const zeroLinePlugin = {
     ctx.restore();
   }
 };
-
 Object.entries(yearGroups).forEach(([yr, data]) => {
   const wrap = document.createElement('div');
   wrap.className = 'chart-wrap';
@@ -892,7 +969,6 @@ Object.entries(yearGroups).forEach(([yr, data]) => {
   const maxVal = Math.max(...data.pips.map(Math.abs), ...data.dd.map(Math.abs));
   new Chart(document.getElementById('cY' + yr), {
     type: 'line',
-    plugins: [zeroLinePlugin],
     data: {
       labels: data.labels.slice(0, data.pips.length),
       datasets: [
@@ -919,13 +995,8 @@ Object.entries(yearGroups).forEach(([yr, data]) => {
       },
       scales: {
         x: { grid: { display: false }, border: { display: false }, ticks: { color: '#8C8679', font: { size: 10 } } },
-        y: {
-          grid: { color: 'rgba(26,24,20,0.06)' },
-          border: { display: false },
-          ticks: { color: '#8C8679', font: { size: 10 } },
-          suggestedMin: -maxVal * 1.1,
-          suggestedMax:  maxVal * 1.1
-        }
+        y: { grid: { color: 'rgba(26,24,20,0.06)' }, border: { display: false }, ticks: { color: '#8C8679', font: { size: 10 } },
+             suggestedMin: -maxVal * 1.1, suggestedMax: maxVal * 1.1 }
       }
     }
   });
