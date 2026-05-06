@@ -261,7 +261,7 @@ footer{border-top:2px solid var(--border);padding:28px 56px;max-width:1200px;mar
       <strong style="color: var(--gold2); font-family: var(--mono); font-size: 12px; letter-spacing: 0.12em; text-transform: uppercase; display: block; margin-bottom: 8px;">
         ⚠️ Peringatan (ID)
       </strong>
-      Website ini secara eksklusif hanya menyajikan data statistik dari hasil backtest yang mencakup periode Januari 2019 hingga pertengahan April 2026. <em>Live forward test</em> akan dimulai pada akhir bulan ini (April 2026) dan akan didokumentasikan secara publik pada channel "demianakistri" di aplikasi TradersFamily. Tidak ada informasi pribadi yang dibagikan pada platform ini. Harap dicatat bahwa Expert Advisor (EA) ini tidak untuk dijual maupun ditawarkan dalam skema bagi hasil apa pun, karena sistem ini dikembangkan murni untuk kepentingan pribadi.
+      Website ini secara eksklusif hanya menyajikan data statistik dari hasil backtest yang mencakup periode Januari 2019 hingga pertengahan April 2026. <em>Live forward test</em> akan dimulai pada akhir bulan ini (April 2026) dan akan didokumentasikan secara publik pada channel "demianakistri" di aplikasi TradersFamily — <a href="https://link.tradersfamily.id/EA0CGxwAJxZWQFdRRkpV" target="_blank" rel="noopener noreferrer" style="color:var(--gold2);text-decoration:underline;text-underline-offset:3px;font-weight:400;">kunjungi channel disini</a>. Tidak ada informasi pribadi yang dibagikan pada platform ini. Harap dicatat bahwa Expert Advisor (EA) ini tidak untuk dijual maupun ditawarkan dalam skema bagi hasil apa pun, karena sistem ini dikembangkan murni untuk kepentingan pribadi.
     </div>
 
   </div>
@@ -969,6 +969,7 @@ Object.entries(yearGroups).forEach(([yr, data]) => {
   const maxVal = Math.max(...data.pips.map(Math.abs), ...data.dd.map(Math.abs));
   new Chart(document.getElementById('cY' + yr), {
     type: 'line',
+    plugins: [zeroLinePlugin],
     data: {
       labels: data.labels.slice(0, data.pips.length),
       datasets: [
